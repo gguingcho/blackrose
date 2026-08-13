@@ -224,32 +224,35 @@ function renderPagination(active){
   const prev = document.createElement('button');
   prev.textContent = '‹';
   prev.disabled = active === 1;
-  prev.onclick = () => goPage(active-1);
+  prev.onclick = () => goPage(active-1, true);
   el.appendChild(prev);
 
   for(let p=1; p<=TOTAL_PAGES; p++){
     const b = document.createElement('button');
     b.textContent = p;
     if(p === active) b.classList.add('active');
-    b.onclick = () => goPage(p);
+    b.onclick = () => goPage(p, true);
     el.appendChild(b);
   }
 
   const next = document.createElement('button');
   next.textContent = '›';
   next.disabled = active === TOTAL_PAGES;
-  next.onclick = () => goPage(active+1);
+  next.onclick = () => goPage(active+1, true);
   el.appendChild(next);
 }
 
-function goPage(p){
+function goPage(p, scroll){
   if(p < 1 || p > TOTAL_PAGES) return;
   renderList(p);
   renderPagination(p);
-  document.getElementById('chapters').scrollIntoView({behavior:'smooth', block:'start'});
+  if(scroll){
+    document.getElementById('chapters').scrollIntoView({behavior:'smooth', block:'start'});
+  }
 }
 
-goPage(1);
+// 페이지네이션 버튼 클릭 시에만 스크롤되도록 별도 처리
+goPage(1, false);
 </script>
 
 </body>
