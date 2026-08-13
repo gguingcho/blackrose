@@ -1,0 +1,281 @@
+/* ==========================================================================
+   검은 장미는 피를 사랑한다 — 웹소설 플랫폼 스타일
+   Palette: 근본은 칠흑, 상흔처럼 번지는 붉은색
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400;600;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+:root{
+  --black-deep:#08070a;
+  --black:#0d0b0f;
+  --black-elevated:#161318;
+  --black-line:#241f26;
+  --red:#b3122e;
+  --red-bright:#e0264a;
+  --red-deep:#5c0819;
+  --text:#ece6e8;
+  --text-dim:#948d92;
+  --text-faint:#5c5760;
+  --serif:'Noto Serif KR', serif;
+  --sans:'Noto Sans KR', sans-serif;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+body{
+  margin:0;
+  background:var(--black-deep);
+  color:var(--text);
+  font-family:var(--sans);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+a{color:inherit; text-decoration:none;}
+
+::selection{background:var(--red-deep); color:#fff;}
+
+/* focus visibility for keyboard nav */
+a:focus-visible, button:focus-visible{
+  outline:2px solid var(--red-bright);
+  outline-offset:3px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+}
+
+/* ---------- 상단 바 ---------- */
+.topbar{
+  position:sticky; top:0; z-index:40;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 32px;
+  background:rgba(8,7,10,0.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--black-line);
+}
+.topbar .brand{
+  font-family:var(--serif); font-weight:900; letter-spacing:0.02em;
+  font-size:18px; color:var(--text);
+}
+.topbar .brand span{color:var(--red-bright);}
+.topbar nav{display:flex; gap:24px; font-size:13px; color:var(--text-dim);}
+.topbar nav a:hover{color:var(--red-bright);}
+
+/* ---------- 히어로 ---------- */
+.hero{
+  position:relative;
+  padding:96px 32px 64px;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse 60% 50% at 82% 0%, rgba(179,18,46,0.16), transparent 60%),
+    linear-gradient(180deg, var(--black) 0%, var(--black-deep) 100%);
+  border-bottom:1px solid var(--black-line);
+}
+.hero::before{
+  /* 갈라진 장미 가시 라인 - signature element */
+  content:"";
+  position:absolute; inset:0;
+  background-image: repeating-linear-gradient(115deg, transparent 0 140px, rgba(179,18,46,0.05) 140px 141px, transparent 141px 280px);
+  pointer-events:none;
+}
+.hero-inner{
+  max-width:960px; margin:0 auto; position:relative; z-index:1;
+}
+.hero-tags{
+  display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap;
+}
+.tag{
+  font-size:11px; letter-spacing:0.08em; padding:5px 11px;
+  border:1px solid var(--red-deep); color:var(--red-bright);
+  border-radius:2px; font-family:var(--sans); font-weight:500;
+}
+.hero h1{
+  font-family:var(--serif); font-weight:900;
+  font-size:clamp(40px, 6vw, 68px);
+  line-height:1.15; margin:0 0 8px;
+  letter-spacing:-0.01em;
+}
+.hero h1 .accent{
+  color:var(--red-bright);
+  text-shadow:0 0 28px rgba(224,38,74,0.35);
+}
+.hero .byline{
+  font-size:14px; color:var(--text-dim); margin:0 0 28px;
+  font-family:var(--sans); letter-spacing:0.02em;
+}
+.hero .synopsis{
+  font-size:15.5px; color:var(--text); max-width:620px;
+  border-left:2px solid var(--red-deep); padding-left:18px;
+  margin:0 0 34px; color:#c9c2c6;
+}
+.hero-stats{
+  display:flex; gap:28px; margin-bottom:34px; flex-wrap:wrap;
+}
+.hero-stats div{font-size:12.5px; color:var(--text-faint);}
+.hero-stats strong{
+  display:block; font-family:var(--serif); font-size:20px;
+  color:var(--text); font-weight:600; margin-bottom:2px;
+}
+.hero-actions{display:flex; gap:12px; flex-wrap:wrap;}
+.btn{
+  font-family:var(--sans); font-size:14px; font-weight:700;
+  padding:13px 26px; border-radius:3px; cursor:pointer;
+  border:1px solid transparent; transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn:hover{transform:translateY(-1px);}
+.btn-primary{
+  background:linear-gradient(135deg, var(--red) 0%, var(--red-deep) 100%);
+  color:#fff; box-shadow:0 8px 24px -8px rgba(179,18,46,0.6);
+}
+.btn-ghost{
+  background:transparent; border-color:var(--black-line); color:var(--text-dim);
+}
+.btn-ghost:hover{border-color:var(--red-deep); color:var(--text);}
+
+/* ---------- 가시 구분선 ---------- */
+.thorn-divider{
+  max-width:960px; margin:0 auto; padding:0 32px;
+  display:flex; align-items:center; gap:12px; color:var(--red-deep);
+}
+.thorn-divider .line{flex:1; height:1px; background:var(--black-line);}
+.thorn-divider svg{flex-shrink:0; opacity:0.75;}
+
+/* ---------- 목차 섹션 ---------- */
+.chapters-section{
+  max-width:960px; margin:0 auto; padding:52px 32px 100px;
+}
+.chapters-head{
+  display:flex; align-items:baseline; justify-content:space-between;
+  margin-bottom:22px; flex-wrap:wrap; gap:10px;
+}
+.chapters-head h2{
+  font-family:var(--serif); font-weight:600; font-size:22px; margin:0;
+}
+.chapters-head .count{font-size:12.5px; color:var(--text-faint);}
+
+.chapter-list{list-style:none; margin:0; padding:0; border-top:1px solid var(--black-line);}
+.chapter-row{
+  display:grid;
+  grid-template-columns:56px 1fr auto 88px;
+  align-items:center; gap:18px;
+  padding:16px 10px;
+  border-bottom:1px solid var(--black-line);
+  transition:background .15s ease;
+}
+a.chapter-row{cursor:pointer;}
+a.chapter-row:hover{background:var(--black-elevated);}
+a.chapter-row:hover .ch-title{color:var(--red-bright);}
+.chapter-row.locked{opacity:0.46; cursor:not-allowed;}
+.chapter-row.locked:hover{background:transparent;}
+
+.ch-num{
+  font-family:var(--serif); font-size:14px; color:var(--text-faint);
+  font-variant-numeric:tabular-nums;
+}
+.ch-title{font-size:15px; color:var(--text); transition:color .15s ease;}
+.ch-title small{display:block; font-size:12px; color:var(--text-faint); margin-top:3px; font-weight:400;}
+.ch-badge{font-size:11px; color:var(--red-bright); border:1px solid var(--red-deep); padding:2px 8px; border-radius:2px; white-space:nowrap;}
+.ch-date{font-size:12px; color:var(--text-faint); text-align:right; display:flex; align-items:center; justify-content:flex-end; gap:6px;}
+
+.lock-icon{width:13px; height:13px; flex-shrink:0;}
+
+.if-flag{
+  display:inline-block; margin-left:10px; font-size:10.5px;
+  color:var(--black-deep); background:var(--red-bright);
+  padding:2px 7px; border-radius:2px; font-weight:700; letter-spacing:.02em;
+  vertical-align:middle;
+}
+
+/* ---------- 페이지네이션 ---------- */
+.pagination{
+  display:flex; justify-content:center; align-items:center;
+  gap:6px; margin-top:36px; flex-wrap:wrap;
+}
+.pagination button{
+  min-width:34px; height:34px; padding:0 8px;
+  background:transparent; border:1px solid var(--black-line);
+  color:var(--text-dim); font-family:var(--sans); font-size:13px;
+  border-radius:3px; cursor:pointer; transition:all .15s ease;
+}
+.pagination button:hover{border-color:var(--red-deep); color:var(--text);}
+.pagination button.active{
+  background:var(--red-deep); border-color:var(--red-deep); color:#fff; font-weight:700;
+}
+.pagination button:disabled{opacity:0.3; cursor:not-allowed;}
+
+/* ---------- IF 외전 안내 배너 ---------- */
+.if-banner{
+  max-width:960px; margin:0 auto 0; padding:0 32px;
+}
+.if-banner-inner{
+  border:1px solid var(--red-deep);
+  background:linear-gradient(135deg, rgba(179,18,46,0.08), transparent);
+  padding:22px 24px; border-radius:4px;
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  margin-top:8px;
+}
+.if-banner-inner .mark{
+  font-family:var(--serif); font-weight:900; font-size:26px; color:var(--red-bright);
+}
+.if-banner-inner p{margin:0; font-size:13.5px; color:var(--text-dim); flex:1; min-width:220px;}
+
+/* ---------- 잠금 유료 안내 카드 ---------- */
+.locked-cta{
+  max-width:960px; margin:26px auto 0; padding:0 32px;
+}
+.locked-cta-inner{
+  border:1px dashed var(--black-line);
+  padding:20px 22px; border-radius:4px; text-align:center;
+  color:var(--text-faint); font-size:13px;
+}
+.locked-cta-inner strong{color:var(--red-bright); font-weight:700;}
+
+/* ---------- 푸터 ---------- */
+footer{
+  border-top:1px solid var(--black-line);
+  padding:34px 32px 60px; text-align:center;
+  color:var(--text-faint); font-size:12px;
+}
+
+/* ---------- 뷰어(회차 읽기) 페이지 ---------- */
+.viewer-header{
+  max-width:720px; margin:0 auto; padding:64px 28px 28px;
+}
+.viewer-header .back{
+  font-size:12.5px; color:var(--text-faint); display:inline-flex; align-items:center; gap:6px; margin-bottom:26px;
+}
+.viewer-header .back:hover{color:var(--red-bright);}
+.viewer-header .eyebrow{font-size:12px; letter-spacing:0.1em; color:var(--red-bright); margin-bottom:10px; font-weight:700;}
+.viewer-header h1{font-family:var(--serif); font-size:clamp(26px,4vw,34px); margin:0 0 8px; font-weight:700;}
+.viewer-header .meta{font-size:12.5px; color:var(--text-faint);}
+
+.viewer-body{
+  max-width:720px; margin:0 auto; padding:0 28px 80px;
+  font-family:var(--serif);
+  font-size:17.5px; line-height:2.05; color:#dcd6d9;
+}
+.viewer-body p{margin:0 0 1.4em;}
+.viewer-body .scene-break{
+  text-align:center; color:var(--red-deep); margin:2.6em 0; letter-spacing:0.5em; font-size:12px;
+}
+
+.viewer-nav{
+  max-width:720px; margin:0 auto; padding:0 28px 90px;
+  display:flex; justify-content:space-between; gap:12px;
+}
+.viewer-nav a, .viewer-nav span{
+  flex:1; padding:14px 18px; border:1px solid var(--black-line);
+  border-radius:3px; font-size:13px; color:var(--text-dim); text-align:center;
+}
+.viewer-nav a:hover{border-color:var(--red-deep); color:var(--text);}
+.viewer-nav span{opacity:0.35; cursor:not-allowed;}
+
+@media (max-width:640px){
+  .chapter-row{grid-template-columns:36px 1fr 70px; grid-template-areas:"num title date" ". title badge";}
+  .ch-badge{display:none;}
+  .topbar nav{display:none;}
+  .hero{padding:72px 20px 48px;}
+  .chapters-section{padding:40px 20px 80px;}
+}
