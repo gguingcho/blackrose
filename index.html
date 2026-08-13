@@ -20,31 +20,36 @@
 
 <header class="hero">
   <div class="hero-inner">
-    <div class="hero-tags">
-      <span class="tag">BL</span>
-      <span class="tag">집착</span>
-      <span class="tag">피폐</span>
-      <span class="tag">재벌물</span>
-      <span class="tag">직장 상사</span>
+    <div class="hero-cover" id="heroCover">
+      <img src="cover.jpg" alt="검은 장미는 피를 사랑한다 표지"
+           onerror="this.style.display='none'; this.parentElement.classList.add('cover-empty');">
+    
     </div>
-    <h1>검은 장미는<br><span class="accent">피를 사랑한다</span></h1>
-    <p class="byline">지음 · 무명 &nbsp;|&nbsp; 매주 화·목 연재 &nbsp;|&nbsp; 연재중</p>
-    <p class="synopsis">
-      DH그룹의 젊은 부회장 윤도겸. 감정도, 사람도 곁에 두지 않는 그가
-      유일하게 곁을 내어준 것은 신입 비서 한서준뿐이었다.
-      선을 지키려는 한서준과, 선을 지울 생각이 없는 윤도겸.
-      계약과 소유, 파혼과 권력 다툼 사이에서 두 사람은
-      서로를 구원하거나, 서로를 파괴하게 된다.
-    </p>
-    <div class="hero-stats">
-      <div><strong>54부작</strong>완결 예정</div>
-      <div><strong>1,204,382</strong>누적 조회수</div>
-      <div><strong>9.8</strong>평점</div>
-      <div><strong>32,110</strong>관심 등록</div>
-    </div>
-    <div class="hero-actions">
-      <a href="ep1.html" class="btn btn-primary">1화 무료로 보기</a>
-      <a href="#chapters" class="btn btn-ghost">전체 회차 보기</a>
+    <div class="hero-text">
+      <div class="hero-tags">
+        <span class="tag">BL</span>
+        <span class="tag">집착</span>
+        <span class="tag">피폐</span>
+      </div>
+      <h1>검은 장미는<br><span class="accent">피를 사랑한다</span></h1>
+      <p class="byline">지음 · 꾸잉 &nbsp;|&nbsp; 매주 화·목 연재 &nbsp;|&nbsp; 연재중</p>
+      <p class="synopsis">
+        DH그룹의 젊은 부회장 윤도겸. 감정도, 사람도 곁에 두지 않는 그가
+        유일하게 곁을 내어준 것은 신입 비서 한서준뿐이었다.
+        선을 지키려는 한서준과, 선을 지울 생각이 없는 윤도겸.
+        계약과 소유, 파혼과 권력 다툼 사이에서 두 사람은
+        서로를 구원하거나, 서로를 파괴하게 된다.
+      </p>
+      <div class="hero-stats">
+        <div><strong>54부작</strong>완결 예정</div>
+        <div><strong>1,204,382</strong>누적 조회수</div>
+        <div><strong>9.8</strong>평점</div>
+        <div><strong>32,110</strong>관심 등록</div>
+      </div>
+      <div class="hero-actions">
+        <a href="ep1.html" class="btn btn-primary">1화 무료로 보기</a>
+        <a href="#chapters" class="btn btn-ghost">전체 회차 보기</a>
+      </div>
     </div>
   </div>
 </header>
@@ -140,12 +145,7 @@ const mainTitles = [
 ];
 
 const ifTitles = [
-  ["IF 1","그날, 비가 오지 않았다면",""],
-  ["IF 2","다른 선택",""],
-  ["IF 3","파혼하지 않았다면",""],
-  ["IF 4","한서준이 끝까지 몰랐다면",""],
-  ["IF 5","겨울, 두 사람의 신혼",""],
-  ["IF 6","몇 년 후",""],
+  ["IF","비 오는 날, 주운 것","한서준을 만나기 전, 다른 시간선의 윤도겸"],
 ];
 
 const links = {1:"ep1.html", 2:"ep2.html", 3:"ep3.html"};
@@ -171,8 +171,8 @@ const ifChapters = ifTitles.map((t, i) => ({
   title: t[0] + " · " + t[1],
   sub: t[2],
   date: baseDate(200 + i*7),
-  locked: true,
-  link: null,
+  locked: false,
+  link: "if1.html",
   free: false,
   isIf: true,
 }));
@@ -211,7 +211,7 @@ function renderList(page){
     row.innerHTML = `
       <span class="ch-num">${ch.num ? String(ch.num).padStart(2,'0') : '·'}</span>
       <span class="ch-title">${ch.title}${ch.isIf ? '<span class="if-flag">IF 외전</span>' : ''}${ch.sub ? `<small>${ch.sub}</small>` : ''}</span>
-      <span class="ch-badge">${ch.free ? '무료' : (locked ? lockSvg + ' 구매' : '무료')}</span>
+      <span class="ch-badge">${ch.isIf ? '특별공개' : (ch.free ? '무료' : (locked ? lockSvg + ' 구매' : '무료'))}</span>
       <span class="ch-date">${ch.date}</span>
     `;
     listEl.appendChild(row);
