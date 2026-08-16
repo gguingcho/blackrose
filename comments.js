@@ -267,6 +267,30 @@
       return nick;
     }
 
+    // 완결까지 결제해서 다 본 독자들의 댓글은 확률에 맡기지 않고 항상 몇 개는 보이게 고정으로 심어둔다
+    // (지금은 못 읽는 4화 이후 내용도, 이미 완독한 다른 독자 입장에선 자유롭게 언급/댓글 가능)
+    FUTURE_HYPE.forEach((entry, idx) => {
+      const nick = uniqueNick();
+      const likes = Math.floor(150 + rand()*700);
+      const daysAgo = rand()*30;
+      const date = new Date(nowMs - daysAgo*86400000 - rand()*3600000);
+      const replyPoolFor = entry.replies || [];
+      const replies = [];
+      if(replyPoolFor.length && rand() < 0.6){
+        const rc = Math.min(1 + Math.floor(rand()*replyPoolFor.length), replyPoolFor.length);
+        const localTexts = shuffle(rand, replyPoolFor).slice(0, rc);
+        localTexts.forEach((t, r) => {
+          const rn = uniqueNick();
+          replies.push({
+            id: `fh${idx}-r${r}`, name: rn, text: t,
+            likes: Math.floor(rand()*15),
+            date: new Date(date.getTime() + (r+1)*3600000*rand()*10),
+          });
+        });
+      }
+      comments.push({ id:'fh'+idx, name:nick, text:entry.text, likes, date, replies });
+    });
+
     // 의미없는 한마디성 댓글(low) 비중을 낮추고, 구체적인 코멘트(top/mid) 비중을 높임
     for(let i=0;i<count;i++){
       const nick = uniqueNick();
