@@ -175,38 +175,42 @@
     "저는 결제하고 하루만에 다 봤어요 후회 1도 없습니다",
   ];
 
-  // 답글은 원댓글 종류에 맞는 걸 골라야 동문서답이 안 됨
+  // 답글은 원댓글 종류에 맞는 걸 골라야 동문서답이 안 됨 + "저도" 시작 반복 지양
   const REPLY_SCENE = [
-    "저도 그 장면에서 심장 나갈 뻔",
-    "맞아요 저도 그 부분 다시 읽었어요",
-    "그 대사 저도 캡처해놨어요",
-    "저도 그거 보고 소름 돋았어요",
-    "님도 그 생각 했구나 저만 그런 줄",
-    "저 그 부분 세 번 다시 읽었어요",
-    "그 장면 저도 계속 생각나요",
-    "완전 그 대사 때문에 잠 설쳤어요",
+    "언니 이거 왜케 잘 써요 진짜 반칙임",
+    "이 댓글 캡처해서 단톡방에 뿌리고 옴",
+    "일어나서 다시 읽고 왔습니다 인정",
+    "여기 심장 몇 개 필요하신 분 계신가요 저 여분 없음",
+    "이거 못 참지 ㅋㅋㅋㅋ 손가락으로 화면 찢을 뻔",
+    "작가님 자수하세요 이렇게 잘 쓰면 반칙이잖아요",
+    "부계정 만들어서 또 봄 이거 실화",
+    "이 부분 스샷 떠서 배경화면 함",
+    "심장 뛰는 소리가 여기까지 들리네요 진짜",
+    "그 대사 보고 화면 던질 뻔했습니다",
+    "이건 국가가 나서서 규제해야 할 클리셰임",
+    "친구야 여기 좀 봐봐 나 지금 죽어",
   ];
   const REPLY_AGREE = [
-    "완전 공감이요 ㅠㅠ",
-    "인정합니다 진짜 필력 미쳤음",
-    "다음화 같이 기다려요 우리",
-    "저도 친구한테 영업했어요",
-    "진짜 너무 좋았어요",
-    "이 댓글 보고 다시 읽으러 갑니다",
-    "정확해요 제 마음을 대신 써주셨네요",
-    "저도 딱 그 생각했어요",
-    "맞아요 필력 진짜 좋으신 듯",
-    "저도 기대하고 있어요",
+    "이거 완전 국룰 각이네요",
+    "그니까 필력 미쳤다니까요",
+    "여기 팬클럽 회원 모집합니다 가입 문의는 댓글로",
+    "저장 완료 이 댓글도 국보급",
+    "웅변대회 나가시면 1등 하실 듯",
+    "정확하시네요 이 댓글이 곧 진리다",
+    "다음화 나오면 여기서 다시 만나요 우리",
+    "이 정도면 팬미팅 가야 할 각",
+    "말씀 잘하셨어요 정줄 놓고 공감함",
+    "이 댓글 보고 정주행 결심함",
   ];
   const REPLY_SHORT = [
-    "ㅋㅋㅋㅋ 저만 그런 거 아니었네요",
-    "ㅇㅈ합니다",
-    "저도요",
+    "ㅋㅋㅋㅋ 인정하고 갑니다",
+    "ㅇㅈ요",
     "완전요",
-    "그니까요",
-    "저도 그럼",
-    "인정",
-    "ㅋㅋㅋ 맞말",
+    "그니까요 진심",
+    "맞말이네",
+    "국룰이지",
+    "이거 레전드",
+    "팩트만 말하시네",
   ];
 
   function pick(rand, arr){ return arr[Math.floor(rand()*arr.length)]; }
@@ -254,9 +258,6 @@
     const drawTop = makeDrawer(rand, topPool);
     const drawMid = makeDrawer(rand, MID_GENERIC);
     const drawLow = makeDrawer(rand, LOW_GENERIC);
-    const drawReplyScene = makeDrawer(rand, REPLY_SCENE);
-    const drawReplyAgree = makeDrawer(rand, REPLY_AGREE);
-    const drawReplyShort = makeDrawer(rand, REPLY_SHORT);
     const drawNick = makeDrawer(rand, NICKS);
 
     function uniqueNick(){
@@ -290,22 +291,24 @@
       const date = new Date(nowMs - daysAgo*86400000 - rand()*3600000);
 
       // 답글은 원댓글 종류에 맞는 답글 풀에서만 뽑는다 (동문서답 방지)
-      const drawReplyFor = tierName === 'top' ? drawReplyScene
-                          : tierName === 'mid' ? drawReplyAgree
-                          : drawReplyShort;
+      const replyPoolFor = tierName === 'top' ? REPLY_SCENE
+                          : tierName === 'mid' ? REPLY_AGREE
+                          : REPLY_SHORT;
 
       // 주접/장면 저격 댓글일수록 답글 많이 붙고, 밋밋한 댓글엔 거의 안 붙는다
       const replyChance = tierName === 'top' ? 0.48 : tierName === 'mid' ? 0.14 : 0.02;
       const replies = [];
       if(rand() < replyChance){
-        const rcMax = tierName === 'top' ? 6 : tierName === 'mid' ? 2 : 1;
-        const rc = 1 + Math.floor(rand()*rcMax);
+        const rcMax = tierName === 'top' ? 5 : tierName === 'mid' ? 2 : 1;
+        const rc = Math.min(1 + Math.floor(rand()*rcMax), replyPoolFor.length);
+        // 같은 스레드 안에서는 절대 안 겹치게 이 댓글 전용으로 한 번 섞어서 씀
+        const localTexts = shuffle(rand, replyPoolFor).slice(0, rc);
         for(let r=0;r<rc;r++){
           const rn = uniqueNick();
           replies.push({
             id: `${i}-r${r}`,
             name: rn,
-            text: drawReplyFor(),
+            text: localTexts[r],
             likes: Math.floor(rand()*15),
             date: new Date(date.getTime() + (r+1)*3600000*rand()*10),
           });
