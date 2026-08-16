@@ -253,7 +253,9 @@
       scenePool = SCENE_POOLS[epLabel] || [];
     }
 
-    const topPool = [...TOP_GENERIC, ...FUTURE_HYPE, ...scenePool];
+    const topPool = epLabel === '이 소설'
+      ? [...TOP_GENERIC, ...FUTURE_HYPE, ...scenePool]
+      : [...TOP_GENERIC, ...scenePool];
     const drawTop = makeDrawer(rand, topPool);
     const drawMid = makeDrawer(rand, MID_GENERIC);
     const drawLow = makeDrawer(rand, LOW_GENERIC);
@@ -267,12 +269,9 @@
       return nick;
     }
 
-    // 완결까지 본 독자의 스포일러성 댓글: 전체 리뷰 페이지에는 다 보여주고,
-    // 개별 화 댓글창에는 그 화 시드에 따라 한두 개만 자연스럽게 섞이게 한다
-    // (모든 화에 똑같은 6개를 통째로 복붙하면 부자연스러우니까)
-    const hypeToInject = epLabel === '이 소설'
-      ? FUTURE_HYPE
-      : shuffle(rand, FUTURE_HYPE).slice(0, 1 + Math.floor(rand()*2)); // 1~2개만
+    // 완결까지 본 독자의 스포일러성 댓글은 "전체 리뷰" 페이지에만 나온다.
+    // 개별 화(1~3화) 댓글창에는 절대 안 섞이게 한다 — 지금 이 화를 읽는 독자 시점과 안 맞으니까.
+    const hypeToInject = epLabel === '이 소설' ? FUTURE_HYPE : [];
 
     hypeToInject.forEach((entry, idx) => {
       const nick = uniqueNick();
