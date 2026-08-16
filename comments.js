@@ -175,22 +175,38 @@
     "저는 결제하고 하루만에 다 봤어요 후회 1도 없습니다",
   ];
 
-  const REPLY_TEMPLATES = [
-    "완전 공감이요 ㅠㅠ",
+  // 답글은 원댓글 종류에 맞는 걸 골라야 동문서답이 안 됨
+  const REPLY_SCENE = [
     "저도 그 장면에서 심장 나갈 뻔",
     "맞아요 저도 그 부분 다시 읽었어요",
-    "ㅋㅋㅋㅋ 저만 그런 거 아니었네요",
-    "저도 알람 맞춰놨어요",
-    "인정합니다 진짜 필력 미쳤음",
-    "저도 회사에서 몰래 봄 ㅋㅋㅋ",
-    "다음화 같이 기다려요 우리",
-    "저도 친구한테 영업했어요",
     "그 대사 저도 캡처해놨어요",
-    "진짜 너무 좋았어요 이 부분",
     "저도 그거 보고 소름 돋았어요",
     "님도 그 생각 했구나 저만 그런 줄",
+    "저 그 부분 세 번 다시 읽었어요",
+    "그 장면 저도 계속 생각나요",
+    "완전 그 대사 때문에 잠 설쳤어요",
+  ];
+  const REPLY_AGREE = [
+    "완전 공감이요 ㅠㅠ",
+    "인정합니다 진짜 필력 미쳤음",
+    "다음화 같이 기다려요 우리",
+    "저도 친구한테 영업했어요",
+    "진짜 너무 좋았어요",
     "이 댓글 보고 다시 읽으러 갑니다",
     "정확해요 제 마음을 대신 써주셨네요",
+    "저도 딱 그 생각했어요",
+    "맞아요 필력 진짜 좋으신 듯",
+    "저도 기대하고 있어요",
+  ];
+  const REPLY_SHORT = [
+    "ㅋㅋㅋㅋ 저만 그런 거 아니었네요",
+    "ㅇㅈ합니다",
+    "저도요",
+    "완전요",
+    "그니까요",
+    "저도 그럼",
+    "인정",
+    "ㅋㅋㅋ 맞말",
   ];
 
   function pick(rand, arr){ return arr[Math.floor(rand()*arr.length)]; }
@@ -238,7 +254,9 @@
     const drawTop = makeDrawer(rand, topPool);
     const drawMid = makeDrawer(rand, MID_GENERIC);
     const drawLow = makeDrawer(rand, LOW_GENERIC);
-    const drawReply = makeDrawer(rand, REPLY_TEMPLATES);
+    const drawReplyScene = makeDrawer(rand, REPLY_SCENE);
+    const drawReplyAgree = makeDrawer(rand, REPLY_AGREE);
+    const drawReplyShort = makeDrawer(rand, REPLY_SHORT);
     const drawNick = makeDrawer(rand, NICKS);
 
     function uniqueNick(){
@@ -253,30 +271,41 @@
       const nick = uniqueNick();
 
       const tier = rand();
-      let likes, text;
+      let likes, text, tierName;
       if(tier < 0.1){
         likes = Math.floor(120 + rand()*780);
         text = drawTop();
+        tierName = 'top'; // 구체적인 장면/대사 언급 댓글
       } else if(tier < 0.42){
         likes = Math.floor(8 + rand()*60);
         text = drawMid();
+        tierName = 'mid'; // 일반적인 응원/기대 댓글
       } else {
         likes = Math.floor(rand()*10);
         text = drawLow();
+        tierName = 'low'; // 한두 마디 짧은 반응
       }
 
       const daysAgo = rand()*30;
       const date = new Date(nowMs - daysAgo*86400000 - rand()*3600000);
 
+      // 답글은 원댓글 종류에 맞는 답글 풀에서만 뽑는다 (동문서답 방지)
+      const drawReplyFor = tierName === 'top' ? drawReplyScene
+                          : tierName === 'mid' ? drawReplyAgree
+                          : drawReplyShort;
+
+      // 주접/장면 저격 댓글일수록 답글 많이 붙고, 밋밋한 댓글엔 거의 안 붙는다
+      const replyChance = tierName === 'top' ? 0.48 : tierName === 'mid' ? 0.14 : 0.02;
       const replies = [];
-      if(rand() < 0.18){
-        const rc = 1 + Math.floor(rand()*3);
+      if(rand() < replyChance){
+        const rcMax = tierName === 'top' ? 6 : tierName === 'mid' ? 2 : 1;
+        const rc = 1 + Math.floor(rand()*rcMax);
         for(let r=0;r<rc;r++){
           const rn = uniqueNick();
           replies.push({
             id: `${i}-r${r}`,
             name: rn,
-            text: drawReply(),
+            text: drawReplyFor(),
             likes: Math.floor(rand()*15),
             date: new Date(date.getTime() + (r+1)*3600000*rand()*10),
           });
