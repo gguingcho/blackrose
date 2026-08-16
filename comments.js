@@ -170,6 +170,28 @@
       replies:["이런 말 들으면 완독 후 재독 각 잡히네요","복선 회수 좋아하는 사람으로서 기대되네요"] },
   ];
 
+  function fmtDate(d){
+    const now = new Date();
+    const diffMs = now - d;
+    const min = Math.floor(diffMs/60000);
+    if(min < 1) return "방금 전";
+    if(min < 60) return `${min}분 전`;
+    const hr = Math.floor(min/60);
+    if(hr < 24) return `${hr}시간 전`;
+    const day = Math.floor(hr/24);
+    if(day < 7) return `${day}일 전`;
+    const wk = Math.floor(day/7);
+    if(wk < 5) return `${wk}주 전`;
+    const mo = Math.floor(day/30);
+    return `${mo}달 전`;
+  }
+
+  function avatarColor(name){
+    let h = 0;
+    for(let i=0;i<name.length;i++) h = (h*31 + name.charCodeAt(i)) % 360;
+    return `hsl(${h}, 55%, 42%)`;
+  }
+
   function genComments(seed, count, epLabel){
     const rand = mulberry32(seed);
     const usedNicks = new Set();
