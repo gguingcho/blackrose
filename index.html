@@ -14,7 +14,7 @@
   <nav>
     <a href="#chapters">회차</a>
     <a href="#" onclick="return false;">작가의 말</a>
-    <a href="#" onclick="return false;">리뷰</a>
+    <a href="#reviews">리뷰</a>
   </nav>
 </div>
 
@@ -78,8 +78,28 @@
   <div class="pagination" id="pagination"></div>
 </section>
 
+<section class="reviews-section" id="reviews">
+  <div class="thorn-divider" style="margin-bottom:40px;">
+    <span class="line"></span>
+    <svg width="22" height="14" viewBox="0 0 22 14" fill="none"><path d="M1 7C5 2 9 12 13 7C15 4.5 17 4.5 21 7" stroke="currentColor" stroke-width="1.3"/><path d="M6 5L7.6 2.2M11 9.5L12.4 12.2M16 5.3L17.4 2.6" stroke="currentColor" stroke-width="1.1"/></svg>
+    <span class="line"></span>
+  </div>
+  <div class="reviews-inner">
+    <div class="chapters-head">
+      <h2>리뷰 &amp; 감상</h2>
+      <span class="count">로그인 없이 누구나 남길 수 있어요</span>
+    </div>
+    <div id="reviewRoot"></div>
+  </div>
+</section>
+
+<script src="comments.js"></script>
+<script>
+  initCommentSection('reviewRoot', { seed: 20260106, count: 100, epLabel: '이 소설' });
+</script>
+
 <footer>
-  © 검은장미노벨 · 등장인물 및 사건은 모두 허구입니다
+  © 검은장미노벨 · 본 사이트는 데모 포트폴리오 페이지입니다 · 등장인물 및 사건은 모두 허구입니다
 </footer>
 
 <script>
