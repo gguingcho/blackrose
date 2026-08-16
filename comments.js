@@ -267,9 +267,14 @@
       return nick;
     }
 
-    // 완결까지 결제해서 다 본 독자들의 댓글은 확률에 맡기지 않고 항상 몇 개는 보이게 고정으로 심어둔다
-    // (지금은 못 읽는 4화 이후 내용도, 이미 완독한 다른 독자 입장에선 자유롭게 언급/댓글 가능)
-    FUTURE_HYPE.forEach((entry, idx) => {
+    // 완결까지 본 독자의 스포일러성 댓글: 전체 리뷰 페이지에는 다 보여주고,
+    // 개별 화 댓글창에는 그 화 시드에 따라 한두 개만 자연스럽게 섞이게 한다
+    // (모든 화에 똑같은 6개를 통째로 복붙하면 부자연스러우니까)
+    const hypeToInject = epLabel === '이 소설'
+      ? FUTURE_HYPE
+      : shuffle(rand, FUTURE_HYPE).slice(0, 1 + Math.floor(rand()*2)); // 1~2개만
+
+    hypeToInject.forEach((entry, idx) => {
       const nick = uniqueNick();
       const likes = Math.floor(150 + rand()*700);
       const daysAgo = rand()*30;
